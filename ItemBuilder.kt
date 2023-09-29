@@ -42,6 +42,8 @@ class ItemBuilder(private var material: Material, private var name: String = "",
     companion object {
         val onItemClickHandler: MutableMap<ItemStack, (event: PlayerInteractEvent) -> Unit> = mutableMapOf()
         val onInvClickHandler: MutableMap<ItemStack, (event: InventoryClickEvent) -> Unit> = mutableMapOf()
+        val customData: MutableMap<ItemStack, MutableMap<String, String>> = mutableMapOf()
+
 
         lateinit var plugin: JavaPlugin
 
@@ -54,11 +56,17 @@ class ItemBuilder(private var material: Material, private var name: String = "",
             val itemMeta: ItemMeta = itemStack.itemMeta
             return ItemBuilder(itemStack.type, itemMeta.displayName, itemMeta.lore, itemStack.amount)
         }
+
+        fun getCustomData(itemStack: ItemStack, key: String): String? {
+            return customData[customData.keys.find { x -> x.isSimilar(itemStack) }]?.get(key)
+        }
     }
 
     private val itemStack: ItemStack = ItemStack(material, amount)
     private val itemMeta: ItemMeta = itemStack.itemMeta
     val enchantments: HashMap<Enchantment, Int> = HashMap()
+
+    val customData: MutableMap<String, String> = mutableMapOf()
 
     fun setName(name: String): ItemBuilder {
         this.name = name
@@ -90,6 +98,12 @@ class ItemBuilder(private var material: Material, private var name: String = "",
         return this
     }
 
+    fun customData(key: String, value: String): ItemBuilder {
+        customData[key] = value
+
+        return this
+    }
+
     private var onInvClick: ((event: InventoryClickEvent) -> Unit) = {}
     private var onItemClick: ((event: PlayerInteractEvent) -> Unit) = {}
 
@@ -112,6 +126,8 @@ class ItemBuilder(private var material: Material, private var name: String = "",
 
         onInvClickHandler[itemStack] = onInvClick
         onItemClickHandler[itemStack] = onItemClick
+
+        ItemBuilder.customData[itemStack] = this.customData
         return itemStack
     }
 }
