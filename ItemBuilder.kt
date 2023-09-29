@@ -1,4 +1,4 @@
-package de.c4vxl.pluginbrowser.Util
+package de.c4vxl.Util
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
