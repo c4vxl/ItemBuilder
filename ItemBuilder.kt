@@ -11,6 +11,14 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.java.JavaPlugin
 
+/*
+* 
+* Item builder by @c4vxl
+*   -> https://github.com/c4vxl/
+*   -> https://c4vxl.de/
+* 
+*/
+
 object ItemBuilderListener : Listener {
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
