@@ -12,11 +12,11 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.java.JavaPlugin
 
 /*
-* 
+*
 * Item builder by @c4vxl
 *   -> https://github.com/c4vxl/
 *   -> https://c4vxl.de/
-* 
+*
 */
 
 object ItemBuilderListener : Listener {
@@ -90,13 +90,16 @@ class ItemBuilder(private var material: Material, private var name: String = "",
         return this
     }
 
+    private var onInvClick: ((event: InventoryClickEvent) -> Unit) = {}
+    private var onItemClick: ((event: PlayerInteractEvent) -> Unit) = {}
+
     fun onInvClick(x: (event: InventoryClickEvent) -> Unit): ItemBuilder {
-        onInvClickHandler[itemStack] = x
+        onInvClick = x
         return this
     }
 
     fun onClick(x: (event: PlayerInteractEvent) -> Unit): ItemBuilder {
-        onItemClickHandler[itemStack] = x
+        onItemClick = x
         return this
     }
 
@@ -106,6 +109,9 @@ class ItemBuilder(private var material: Material, private var name: String = "",
         itemStack.amount = amount
         itemStack.setItemMeta(itemMeta)
         itemStack.addUnsafeEnchantments(enchantments)
+
+        onInvClickHandler[itemStack] = onInvClick
+        onItemClickHandler[itemStack] = onItemClick
         return itemStack
     }
 }
