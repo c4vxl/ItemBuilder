@@ -80,6 +80,11 @@ class ItemBuilder(private var material: Material, private var name: String = "",
         return this
     }
 
+    fun unbreakable(boolean: Boolean): ItemBuilder {
+        itemMeta.isUnbreakable = boolean
+        return this
+    }
+
     fun enchant(enchantment: Enchantment, lvl: Int): ItemBuilder {
         enchantments[enchantment] = lvl
         return this
