@@ -1,4 +1,4 @@
-package de.c4vxl.Util
+package de.c4vxl.pluginbrowser.Util
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -38,7 +38,13 @@ object ItemBuilderListener : Listener {
     }
 }
 
-class ItemBuilder(private var material: Material, private var name: String = "", private var lore: MutableList<String>? = null, private var amount: Int = 1) {
+class ItemBuilder(private var material: Material,
+                  private var name: String = "",
+                  private var lore: MutableList<String>? = null,
+                  private var amount: Int = 1,
+                  val customData: MutableMap<String, String> = mutableMapOf(),
+                  val enchantments: HashMap<Enchantment, Int> = HashMap()) {
+    
     companion object {
         val onItemClickHandler: MutableMap<ItemStack, (event: PlayerInteractEvent) -> Unit> = mutableMapOf()
         val onInvClickHandler: MutableMap<ItemStack, (event: InventoryClickEvent) -> Unit> = mutableMapOf()
@@ -64,9 +70,6 @@ class ItemBuilder(private var material: Material, private var name: String = "",
 
     private val itemStack: ItemStack = ItemStack(material, amount)
     private val itemMeta: ItemMeta = itemStack.itemMeta
-    val enchantments: HashMap<Enchantment, Int> = HashMap()
-
-    val customData: MutableMap<String, String> = mutableMapOf()
 
     fun setName(name: String): ItemBuilder {
         this.name = name
