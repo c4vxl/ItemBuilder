@@ -1,4 +1,4 @@
-package de.c4vxl.pluginbrowser.Util
+package de.c4vxl.stoneblock.utils
 
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -42,13 +42,13 @@ class ItemBuilder(private var material: Material,
                   private var name: String = "",
                   private var lore: MutableList<String>? = null,
                   private var amount: Int = 1,
-                  val customData: MutableMap<String, String> = mutableMapOf(),
+                  val customData: MutableMap<String, Any> = mutableMapOf(),
                   val enchantments: HashMap<Enchantment, Int> = HashMap()) {
-    
+
     companion object {
         val onItemClickHandler: MutableMap<ItemStack, (event: PlayerInteractEvent) -> Unit> = mutableMapOf()
         val onInvClickHandler: MutableMap<ItemStack, (event: InventoryClickEvent) -> Unit> = mutableMapOf()
-        val customData: MutableMap<ItemStack, MutableMap<String, String>> = mutableMapOf()
+        val customData: MutableMap<ItemStack, MutableMap<String, Any>> = mutableMapOf()
 
 
         lateinit var plugin: JavaPlugin
@@ -63,7 +63,7 @@ class ItemBuilder(private var material: Material,
             return ItemBuilder(itemStack.type, itemMeta.displayName, itemMeta.lore, itemStack.amount)
         }
 
-        fun getCustomData(itemStack: ItemStack, key: String): String? {
+        fun getCustomData(itemStack: ItemStack, key: String): Any? {
             return customData[customData.keys.find { x -> x.isSimilar(itemStack) }]?.get(key)
         }
     }
@@ -101,7 +101,7 @@ class ItemBuilder(private var material: Material,
         return this
     }
 
-    fun customData(key: String, value: String): ItemBuilder {
+    fun customData(key: String, value: Any): ItemBuilder {
         customData[key] = value
 
         return this
